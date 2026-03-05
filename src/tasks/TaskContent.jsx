@@ -1,10 +1,13 @@
 import React from 'react';
+import TaskFormContent from './TaskFormContent';
+
 
 const TaskContent = () => {
     return (
         <div>
             <HeaderContent/>
-            
+            <hr></hr>
+            <TaskFormContent/>
         </div>
     );
 };
@@ -27,5 +30,7 @@ const HeaderContent = () => {
         </div>
      );
 };
+
+
 
 export default TaskContent;
