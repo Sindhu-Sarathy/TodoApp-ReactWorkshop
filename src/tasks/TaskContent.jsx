@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TaskFormContent from './TaskFormContent';
 import TodoListContent from './TodoListContent';
 
 const TaskContent = () => {
     const [todos,setTodos]=useState([]);
+    const [editTodo,setEditTodo]=useState(null);
     const addTodo = (todo) => {
         setTodos([...todos,{...todo,id:Date.now(),completed:false}]);
     };
@@ -12,8 +13,12 @@ const TaskContent = () => {
         setTodos(todos.filter(t => t.id !== id));
     };
 
-    const markComplete = (id) => {
-        setTodos(todos.map(t => t.id == id ? {...t,completed:true} : t ));
+    const editTodoList = (todo) => {
+        setEditTodo(todo);
+    };
+
+    const updateTodo =(updatedTodo) => {
+        setTodos(todos.map(t => t.id == updatedTodo.id ? updatedTodo : t ));
     };
 
     const toggleComplete = (id) =>{
@@ -21,15 +26,20 @@ const TaskContent = () => {
 
     };
 
+
+
+
+
+
     return (
         <div>
             <HeaderContent/>
             <hr></hr>
              <div className="container-lg" style={{width:'1000px'}}>
              <div className="bg-white border shadow-sm p-4 rounded">
-                <TaskFormContent addTodo={addTodo} />
+                <TaskFormContent addTodo={addTodo} updateTodo={updateTodo} editTodo={editTodo} setEditTodo={setEditTodo} />
              </div>
-              <TodoListContent todos={todos} deleteTodo={deleteTodo} markComplete={markComplete} toggleComplete={toggleComplete}/>
+              <TodoListContent todos={todos} deleteTodo={deleteTodo} toggleComplete={toggleComplete} editTodoList={editTodoList}/>
             </div>
         </div>
     );

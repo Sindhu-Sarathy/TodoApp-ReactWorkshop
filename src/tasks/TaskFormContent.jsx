@@ -1,24 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import TodoListContent from './TodoListContent';
 
-const TaskFormContent = ({addTodo}) => {
+const TaskFormContent = ({addTodo,updateTodo,editTodo,setEditTodo}) => {
 
   const{
     register, 
     handleSubmit,
+    setValue,
     reset,
     formState:{errors}
   } = useForm();
 
+  useEffect(()=> {
+        if(editTodo){
+            setValue("title",editTodo.title);
+            setValue("description",editTodo.description);
+            setValue("dueDate",editTodo.dueDate);
+            setValue("assignedTo",editTodo.assignedTo);
+        }
+    },[editTodo]);
+
   const onSubmit=(data)=>{
-    const todoData={
-      ...data,
-      id:Date.now(),
-      completed:false,
-      attachments: data.attachments?.[0]?.name || null
+
+    if(editTodo){
+      updateTodo({...editTodo,...data});
+      setEditTodo(null);
     }
-    addTodo(todoData);
+    else{
+      addTodo({
+        ...data,
+        id:Date.now(),
+        completed:false,
+        attachments: data.attachments?.[0]?.name || null
+      });
+    }
     reset();
   }
 
@@ -64,7 +80,8 @@ const TaskFormContent = ({addTodo}) => {
              <ul id="fileList" className="list-group"></ul>
             </div>
             <div className="text-end">
-              <button type="submit" className="btn btn-primary" id="btnAddTodo">+ Add Todo</button>
+              <button type="submit" className="btn btn-primary" id="btnAddTodo">
+                {editTodo ? "Update Todo" : "+ Add Todo"}</button>
             </div>
       </form> 
       
