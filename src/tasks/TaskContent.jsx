@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TaskFormContent from './TaskFormContent';
 
 
 const TaskContent = () => {
+    const [todos,setTodos]=useState([]);
+    const addTodo = (todo) => {
+        setTodos([...todos,{ ...todo,id:Date.now()}]);
+    };
     return (
         <div>
             <HeaderContent/>
             <hr></hr>
-            <TaskFormContent/>
+            <TaskFormContent addTodo={addTodo} />
         </div>
     );
 };
