@@ -15,6 +15,7 @@ const TaskFormContent = ({addTodo}) => {
     const todoData={
       ...data,
       id:Date.now(),
+      completed:false,
       attachments: data.attachments?.[0]?.name || null
     }
     addTodo(todoData);
@@ -22,8 +23,7 @@ const TaskFormContent = ({addTodo}) => {
   }
 
     return (
-        <div className="container-lg" style={{width:'1000px'}}>
-             <div className="bg-white border shadow-sm p-4 rounded">
+       
         <form id="todoForm" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
           <label htmlFor="txtTitle" className="form-label">Title</label>
@@ -38,8 +38,8 @@ const TaskFormContent = ({addTodo}) => {
           <div className="row">
             <div className="col-md-6 mb-3">
               <label htmlFor="dueDateInput" className="form-label">Due Date</label>
-              <input type="datetime-local" className="form-control" name="dueDate" id="dueDateInput" {...register("duedate",{required:"Due date is required"})}/>
-              <small className="text-danger">{errors.duedate && errors.duedate.message}</small>
+              <input type="datetime-local" className="form-control" name="dueDate" id="dueDateInput" {...register("dueDate",{required:"Due date is required"})}/>
+              <small className="text-danger">{errors.dueDate && errors.dueDate.message}</small>
             </div>
             <div className="col-md-6 mb-3">
               <label htmlFor="assignPerson" className="form-label">Assign to Person(Optional)</label>
@@ -68,9 +68,7 @@ const TaskFormContent = ({addTodo}) => {
             </div>
       </form> 
       
-    </div>
-    <TodoListContent/>
-        </div>
+   
     );
 };
 

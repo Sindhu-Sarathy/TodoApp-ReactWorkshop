@@ -1,11 +1,11 @@
 import React from 'react';
 
-const TodoListContent = () => {
+const TodoListContent = ({todos,deleteTodo,markComplete,toggleComplete}) => {
     return (
         <div className="bg-white rounded border shadow-sm mt-4 mb-5" >
            <FilterContent/> 
            <hr className='my-0'></hr>
-           <ListContent/>
+           <ListContent todos={todos} deleteTodo={deleteTodo} markComplete={markComplete} toggleComplete={toggleComplete}/>
         </div>
         
     );
@@ -29,24 +29,28 @@ const FilterContent = () => {
 
 };
 
-const ListContent = () => {
+
+
+const ListContent = ({todos,deleteTodo,markComplete,toggleComplete}) => {
     return(
         <div>
 <ul className="list-group m-3" id="todoList">
-      
-          <li className="list-group-item todoItemList">
+      {todos.map((todo) => 
+       <li className="list-group-item todoItemList">
             <div className="container-lg px-0">
               <div className="row">
                 <div className="col-auto order-1 me-auto">
-                  <p className="fw-semibold m-0 todoTitle">Example Todo 1</p> 
-                  <p className="my-1 small text-secondary todoDescription">Description goes here</p>
+                  <p className="fw-semibold m-0 todoTitle">{todo.title}</p> 
+                  <p className="my-1 small text-secondary todoDescription">{todo.description}</p>
                 </div>
                 <div className="col-sm-auto order-3 order-sm-2 mb-1 pe-0 small text-secondary">
-                  Created: <span className="text-nowrap todoCreatedDate">2025-07-01</span>
+                  Created: <span className="text-nowrap todoCreatedDate">{new Date(todo.id).toLocaleDateString()}</span>
                 </div>
                 <div className="col-auto order-2 mb-1 order-sm-3 text-end">
                   <div className="btn-group" aria-label="Edit">
-                    <button type="button" className="btn btn-sm btn-outline-success acceptBtn">
+                    <button type="button"   className={`btn btn-sm ${
+                          todo.completed ? "btn-success" : "btn-outline-success"
+                        }`} onClick={()=> toggleComplete(todo.id)}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-lg" viewBox="0 0 16 16">
                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
                       </svg>
@@ -57,7 +61,7 @@ const ListContent = () => {
                       </svg>
                     </button>
                    
-                    <button type="button" className="btn btn-sm btn-outline-danger btnDelete">
+                    <button type="button" className="btn btn-sm btn-outline-danger btnDelete" onClick={()=> deleteTodo(todo.id)}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -73,7 +77,7 @@ const ListContent = () => {
                           <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
                           <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
                         </svg>
-                        Due:<span className="ms-1 text-nowrap todoDueDate">2025-07-10</span>
+                        Due:<span className="ms-1 text-nowrap todoDueDate">{new Date(todo.dueDate).toLocaleDateString()}</span>
                       </div>
                     </div>
                     <div className="col-sm-auto mt-2 mt-sm-0 d-flex align-items-center gap-2">
@@ -81,13 +85,13 @@ const ListContent = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="align-text-bottom" viewBox="0 0 16 16">
                           <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                         </svg>
-                       <span className="todoAssignedPerson">John Doe</span>
+                       <span className="todoAssignedPerson">{todo.assignedTo}</span>
                       </span>
                       <span className="badge text-bg-secondary text-white py-1 spanAttachment">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="align-text-bottom" viewBox="0 0 16 16">
                           <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z"/>
                         </svg>
-                       <span className="todoAttachement">2 attachments</span> 
+                       <span className="todoAttachement">{todo.attachments}</span> 
                       </span>
                     </div>
                   </div>
@@ -96,6 +100,8 @@ const ListContent = () => {
             </div>
           </li>
         
+      )}
+         
         </ul>
         </div>
     );
