@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import assignedTo from '../data/AssignedToUsers.json'
 import TodoListContent from './TodoListContent';
 
 const TaskFormContent = ({addTodo,updateTodo,editTodo,setEditTodo}) => {
@@ -11,6 +12,7 @@ const TaskFormContent = ({addTodo,updateTodo,editTodo,setEditTodo}) => {
     reset,
     formState:{errors}
   } = useForm();
+
 
   useEffect(()=> {
         if(editTodo){
@@ -61,11 +63,11 @@ const TaskFormContent = ({addTodo,updateTodo,editTodo,setEditTodo}) => {
               <label htmlFor="assignPerson" className="form-label">Assign to Person(Optional)</label>
               <select className="form-select" id="assignPerson" {...register("assignedTo")}>
                 <option value="0">-- Select Person (optional) -- </option>
-                <option value="Mattias Hellman">Mattias Hellman</option>
-                <option value="Sindhuja Parthasarathy">Sindhuja Parthasarathy</option>
-                <option value="Iffat Zabin">Iffat Zabin</option>
-                <option value="Zackaria Azzoug">Zackaria Azzoug</option>
-                <option value="Alexander Haitin">Alexander Haitin</option>
+                {assignedTo.map(user => (
+                  <option key={user.id} value={user.name}>{user.name}</option>
+                ))}
+
+               
               </select>
             </div>
           </div>

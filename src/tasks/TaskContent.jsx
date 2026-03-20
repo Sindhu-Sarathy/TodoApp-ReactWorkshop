@@ -49,7 +49,7 @@ const HeaderContent = () => {
      return(
         <div className='container-fluid mt-2'>
             <div className='row'>
-                <div className='col-sm-4 fw-bold'><h1>Tasks</h1>
+                <div className='col-sm-4 fw-bold text-white'><h1>Tasks</h1>
                 </div>
                 <div className='col-sm-4 text-center'>
                    <div class="input-group mb-3">

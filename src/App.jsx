@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-     <div className="d-flex">
+     <div className="d-flex bg-secondary bg-gradient">
       <div style={{width:'250px'}}>
         <SidebarContent/>
       </div>
